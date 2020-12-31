@@ -44,7 +44,6 @@ services:
     logging:
       driver: local
 
-
   upload:
     image: micro-hero/upload
     build: ./services/upload
@@ -81,7 +80,6 @@ services:
     logging:
       driver: local
 
-
   recognize:
     image: micro-hero/recognize
     build: ./services/recognize
@@ -103,10 +101,6 @@ services:
       - micro-hero
     logging:
       driver: local
-    healthcheck:
-      test: curl http://recognize:5000/healthy
-      interval: 10s
-      timeout: 10s
 
 networks:
   micro-hero:

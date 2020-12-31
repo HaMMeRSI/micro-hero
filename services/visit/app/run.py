@@ -12,8 +12,8 @@ logging.basicConfig(
 
 
 def run():
-    time.sleep(5)
-    sns = boto3.client('sns', endpoint_url=os.getenv('AWS_ENDPOINT', 'http://localhost:4566'))
+    time.sleep(8)  # wait for other services to boot
+    sns = boto3.client('sns', endpoint_url=os.getenv('AWS_ENDPOINT'))
     topic_arn = os.getenv('SNS_TOPIC_ARN', 'arn:aws:sns:us-east-1:000000000000:micro-hero')
 
     visitors = [

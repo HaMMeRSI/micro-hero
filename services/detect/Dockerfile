@@ -1,3 +1,3 @@
-FROM ubuntu:18.04
+FROM node:current-alpine3.12
 
 CMD echo "TODO"
