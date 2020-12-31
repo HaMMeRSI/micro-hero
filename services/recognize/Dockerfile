@@ -1,0 +1,17 @@
+FROM orgoro/dlib-opencv-python:3.8
+
+WORKDIR /usr/src
+
+COPY ./requirements.txt .
+
+RUN pip install -r requirements.txt
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+   && unzip awscliv2.zip \
+   && ./aws/install
+
+ENV PYTHONPATH=/usr/src
+
+COPY ./app ./app
+
+CMD sh app/startup.sh && python app/server.py
