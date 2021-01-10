@@ -24,12 +24,8 @@ services:
     image: micro-hero/visit
     build: ./services/visit
     container_name: visit
-    environment:
-      - AWS_ENDPOINT=http://localstack:4566
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=us-east-1
-      - SNS_TOPIC_ARN=arn:aws:sns:us-east-1:000000000000:visit
+    env_file:
+      aws.env
     depends_on:
       localstack:
         condition: service_healthy
@@ -48,12 +44,8 @@ services:
     image: micro-hero/upload
     build: ./services/upload
     container_name: upload
-    environment:
-      - AWS_ENDPOINT=http://localstack:4566
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=us-east-1
-      - SNS_TOPIC_ARN=arn:aws:sns:us-east-1:000000000000:visit
+    env_file:
+      aws.env
     depends_on:
       localstack:
         condition: service_healthy
@@ -66,12 +58,8 @@ services:
     image: micro-hero/detect
     build: ./services/detect
     container_name: detect
-    environment:
-      - AWS_ENDPOINT=http://localstack:4566
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=us-east-1
-      - SNS_TOPIC_ARN=arn:aws:sns:us-east-1:000000000000:visit
+    env_file:
+      aws.env
     depends_on:
       localstack:
         condition: service_healthy
@@ -86,13 +74,10 @@ services:
     container_name: recognize
     ports:
       - '5000:5000'
+    env_file:
+      aws.env
     environment:
       - BATMAN_IMG=/usr/src/app/batman.jpg
-      - AWS_ENDPOINT=http://localstack:4566
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=us-east-1
-      - SNS_TOPIC_ARN=arn:aws:sns:us-east-1:000000000000:visit
       - RECOGNIZE_ENDPOINT=http://recognize:5000/sns
     depends_on:
       localstack:
