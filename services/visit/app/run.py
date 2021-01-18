@@ -21,9 +21,10 @@ def run():
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/joker-2.jpg',
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/joker-1.jpg',
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/batman.jpg',
+                   'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/bat-1.jpg',
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/joker-1.jpg',
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/joker-1.jpg',
-                   'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/joker-2.jpg',
+                   'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/bat-2.jpg',
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/joker-2.jpg',
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/batman-with-mask.jpg',
                    'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/micro-hero/batman.jpg'
