@@ -71,11 +71,11 @@ def _process_fr(message):
     visitor = message['visitor_url']
     detection = message['detection']
     suffix = visitor.rsplit('.', maxsplit=1)[-1]
-    with tempfile.NamedTemporaryFile(suffix=suffix) as local_visitor:
+    with tempfile.NamedTemporaryFile(suffix=f'.{suffix}') as local_visitor:
         # recognize
         bucket, key = visitor.replace('s3://', '').split('/', maxsplit=1)
         APP.s3.download_file(bucket, key, local_visitor.name)
-        is_batman = APP.recognizer.is_batman(local_visitor.name, detection)
+        is_batman = APP.recognizer.is_batman(local_visitor.name, tuple(detection))
 
         # create new message
         message = json.dumps({'id': message['id'], 'visitor_url': visitor}, indent=4)

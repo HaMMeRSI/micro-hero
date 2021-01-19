@@ -12,6 +12,7 @@ services:
       - DEBUG=0
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
+      - './localstack-init:/docker-entrypoint-initaws.d'
     networks:
       - micro-hero
     healthcheck:
@@ -49,6 +50,8 @@ services:
     depends_on:
       localstack:
         condition: service_healthy
+      recognize:
+        condition: service_started
     networks:
       - micro-hero
     logging:
@@ -63,6 +66,8 @@ services:
     depends_on:
       localstack:
         condition: service_healthy
+      recognize:
+        condition: service_started
     networks:
       - micro-hero
     logging:

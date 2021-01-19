@@ -1,3 +1,3 @@
 FROM node:current-alpine3.12
 
-CMD echo "TODO"
+CMD sleep 15 && echo "TODO"
