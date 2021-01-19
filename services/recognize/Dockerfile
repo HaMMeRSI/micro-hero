@@ -14,4 +14,4 @@ ENV PYTHONPATH=/usr/src
 
 COPY ./app ./app
 
-CMD sleep 15 && python app/server.py
+CMD sleep 10 && python app/server.py
