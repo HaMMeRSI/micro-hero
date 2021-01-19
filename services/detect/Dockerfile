@@ -1,3 +1,5 @@
-FROM node:current-alpine3.12
+FROM node:lts
 
-CMD echo "TODO"
+RUN apt-get update && apt-get install python3
+
+CMD sleep 15 && echo "TODO"

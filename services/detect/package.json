@@ -1,0 +1,12 @@
+{
+  "name": "detect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "jsdom": "^16.4.0"
+  }
+}
