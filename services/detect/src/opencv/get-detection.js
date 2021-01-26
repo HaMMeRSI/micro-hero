@@ -2,7 +2,7 @@ const { loadImage } = require('canvas');
 
 /*
     @param buffer: Buffer | path to local file
-    @return: detection array
+    @return: Promise<detection array>
     should call loadOpenCv from loader before first request
  */
 async function getDetection(buffer) {
