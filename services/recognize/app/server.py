@@ -50,26 +50,33 @@ def sns():
     # handle notification
     elif header == 'Notification':
         subject = data.get('Subject')
+        raw_message = data.get('Message')
+        message = json.loads(raw_message)
         if subject == 'FR':
-            raw_message = data.get('Message')
             try:
-                message = json.loads(raw_message)
                 _process_fr(message)
             except (KeyError, AssertionError, json.JSONDecodeError):
                 logging.error(f'[!] FR message is invalid '
-                              f'\n expected: {{"id": xxx, "visitor_url": s3://visitors/.., "detection": [T, R, B, L]}}'
-                              f'\n got: {raw_message}')
+                              f'\n expected: '
+                              f'\n   {{"id": xxx, "visitor_url": s3://visitors/.../*.jpg, "detection": [T, R, B, L]}}'
+                              f'\n got: '
+                              f'\n   {raw_message}')
                 return flask.jsonify('Error ❌')
             except ClientError:
                 logging.error(f'[!] could not read image from s3'
                               f'\n got: {raw_message}')
                 return flask.jsonify('Error ❌')
+        else:
+            logging.info(f'[*] Subject:{subject}\n{message} - ignored!')
+
     return flask.jsonify('OK ✅')
 
 
 def _process_fr(message):
     visitor = message['visitor_url']
     detection = message['detection']
+    assert visitor.endswith('.jpg')
+    assert isinstance(detection, list)
     suffix = visitor.rsplit('.', maxsplit=1)[-1]
     with tempfile.NamedTemporaryFile(suffix=f'.{suffix}') as local_visitor:
         # recognize
