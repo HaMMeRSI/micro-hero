@@ -1,16 +1,24 @@
-import flask
-from flask import request
 import tempfile
 import os
 import json
 import boto3
-from botocore.exceptions import ClientError
 import logging
 import requests
+import time
+import threading
+
+import flask
+from flask import request
+from botocore.exceptions import ClientError
+
 from app.recognizer import BatmanRecognizer
 
+APP = flask.Flask('recognize')
+APP.config["DEBUG"] = False
 
-def subscribe(app):
+
+def subscribe():
+    time.sleep(2)
     logging.basicConfig(
         format='%(asctime)s %(levelname)-8s %(message)s',
         level=logging.INFO,
@@ -19,19 +27,14 @@ def subscribe(app):
     aws_endpoint = os.getenv('AWS_ENDPOINT')
 
     # get aws clients
-    app.s3 = boto3.client('s3', endpoint_url=aws_endpoint)
-    app.sns = boto3.client('sns', endpoint_url=aws_endpoint)
-    app.recognizer = BatmanRecognizer(os.getenv('BATMAN_IMG'))
-    app.topic_arn = os.getenv('SNS_TOPIC_ARN')
+    APP.s3 = boto3.client('s3', endpoint_url=aws_endpoint)
+    APP.sns = boto3.client('sns', endpoint_url=aws_endpoint)
+    APP.recognizer = BatmanRecognizer(os.getenv('BATMAN_IMG'))
+    APP.topic_arn = os.getenv('SNS_TOPIC_ARN')
 
     # subscribe
-    logging.info(f'[*] subscribing sns topic {app.topic_arn} to {recognize_endpoint}')
-    app.sns.subscribe(TopicArn=app.topic_arn, Protocol='http', Endpoint=recognize_endpoint)
-
-
-APP = flask.Flask('recognize')
-APP.config["DEBUG"] = False
-subscribe(APP)
+    logging.info(f'[*] subscribing sns topic {APP.topic_arn} to {recognize_endpoint}')
+    APP.sns.subscribe(TopicArn=APP.topic_arn, Protocol='http', Endpoint=recognize_endpoint)
 
 
 @APP.route('/sns', methods=['GET', 'POST', 'PUT'])
@@ -45,7 +48,9 @@ def sns():
 
     # confirm subscription
     if header == 'SubscriptionConfirmation' and 'SubscribeURL' in data:
-        requests.get(data['SubscribeURL'].replace('http://localhost', 'http://localstack'))
+        subscription_url = data['SubscribeURL'].replace('http://localhost', 'http://localstack')
+        logging.info(f'Confirming subscription: {subscription_url}')
+        requests.get(subscription_url)
 
     # handle notification
     elif header == 'Notification':
@@ -91,4 +96,6 @@ def _process_fr(message):
         APP.sns.publish(TopicArn=APP.topic_arn, Subject=subject, Message=message)
 
 
+delayed_subscriber = threading.Thread(target=subscribe)  # 2 seconds delay subscribe
+delayed_subscriber.start()
 APP.run(host='0.0.0.0', port=5000, threaded=True)
