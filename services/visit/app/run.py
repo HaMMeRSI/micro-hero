@@ -32,7 +32,7 @@ def run():
     for id_, visitor in enumerate(visitors):
         time.sleep(random.randint(2, 5) * 3)
         message = json.dumps({'id': id_, 'visitor_url': visitors[id_]}, indent=4)
-        subject = 'UPLOAD'
+        subject = 'DETECT'
         logging.info(f'[*] Subject:{subject}\n{message}')
         sns.publish(TopicArn=topic_arn, Subject=subject, Message=message)
 

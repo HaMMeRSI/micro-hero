@@ -32,25 +32,7 @@ services:
         condition: service_healthy
       recognize:
         condition: service_started
-      upload:
-        condition: service_started
       detect:
-        condition: service_started
-    networks:
-      - micro-hero
-    logging:
-      driver: local
-
-  upload:
-    image: micro-hero/upload
-    build: ./services/upload
-    container_name: upload
-    env_file:
-      aws.env
-    depends_on:
-      localstack:
-        condition: service_healthy
-      recognize:
         condition: service_started
     networks:
       - micro-hero
