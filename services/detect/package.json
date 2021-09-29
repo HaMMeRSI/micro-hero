@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.6.1",
-    "jsdom": "^16.4.0"
+    "@tensorflow-models/blazeface": "0.0.7",
+    "@tensorflow/tfjs-node": "3.9.0"
   }
 }
